@@ -128,17 +128,23 @@ def test_docker_compose_prod_file_exists(base_dir: Path,
     )
 
 
-# def test_vm_name(deploy_file_info: tuple[Path, str],
-#                  deploy_info_file_content: dict[str, str]):
-#     _, relative_path = deploy_file_info
-#     vm_name_key = 'vm_name'
-#     assert vm_name_key in deploy_info_file_content, (
-#         f'Убедитесь, что файл `{relative_path}` содержит ключ '
-#         f'`{vm_name_key}`.'
-#     )
+def test_edu_provisioning_id(deploy_file_info: tuple[Path, str],
+                             deploy_info_file_content: dict[str, str]):
+    _, relative_path = deploy_file_info
+    provisioning_id_key = 'EDU_PROVISIONING_ID'
+    assert provisioning_id_key in deploy_info_file_content, (
+        f'Убедитесь, что файл `{relative_path}` содержит ключ '
+        f'`{provisioning_id_key}`.'
+    )
 
-#     vm_name = deploy_info_file_content[vm_name_key]
-#     assert vm_name.startswith('r-backend-vm') or vm_name.startswith('r-fullstack-magistracy'), (
-#         f'Убедитесь, что в ключе `{vm_name_key}` файла `{relative_path}` '
-#         'указано имя виртуальной машины.'
-#     )
+    provisioning_id = deploy_info_file_content[provisioning_id_key]
+    assert provisioning_id.startswith('s') and len(provisioning_id) > 1, (
+        f'Убедитесь, что в ключе `{provisioning_id_key}` файла '
+        f'`{relative_path}` указан идентификатор выделенного ресурса: '
+        'значение должно начинаться с `s` и содержать идентификатор после неё.'
+    )
+    assert provisioning_id != 's000000', (
+        f'Убедитесь, что в ключе `{provisioning_id_key}` файла '
+        f'`{relative_path}` указан идентификатор вашего выделенного ресурса, '
+        'а не значение `s000000` из примера.'
+    )
